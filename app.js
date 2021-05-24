@@ -47,7 +47,6 @@ app.post('/api/stuff', (req, res, next) => {
 });
 
 
-
   //// tableau avec deux image et prixtt sa mis dans le tableau stuff
   app.use('/api/stuff', (req, res, next) => {
     Thing.find()
@@ -55,4 +54,20 @@ app.post('/api/stuff', (req, res, next) => {
       .catch(error => res.status(400).json({ error }));
   });
 
+/// la modification des produits
+  app.put('/api/stuff/:id', (req, res, next) => {
+    /// celui dont l'id est egal a lid envoyer ds les parametre de requetes
+    /// on recupere le thing qui est ds le coprs de la requetes
+    Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+      .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+      .catch(error => res.status(400).json({ error }));
+  });
+
+
+
+  app.get('/api/stuff/:id', (req, res, next) => {
+    Thing.findOne({ _id: req.params.id })
+      .then(thing => res.status(200).json(thing))
+      .catch(error => res.status(404).json({ error }));
+  });
 module.exports = app;
